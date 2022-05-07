@@ -61,7 +61,15 @@ async function run() {
             result = await inventoryCollection.insertOne(newInventory);
             res.send({ success: true, message: `Successfully addeded item: ${newInventory.productName}` });
         });
-
+        // ======================== My items API =====================
+        app.get('/myItems',async(req,res)=>{
+            const email = req.query.email;
+            // console.log(email)
+            const query={email:email};
+            const cursor = inventoryCollection.find(query);
+            const myItems = await cursor.toArray();
+            res.send(myItems);
+        })
         // =========================== DELETE =====================
         app.delete('/inventory/:id', async (req, res) => {
             const id = req.params.id;
